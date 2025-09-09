@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>生态治理：十八大前后中国的变化</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body{font-family: Inter,'Noto Sans SC',system-ui;background:#f8faf9;color:#052f2f;}
+    .hero{position:relative;height:82vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .hero .overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,78,70,.75),rgba(6,95,70,.4));}
+    .hero .content{position:relative;z-index:4;text-align:center;color:#fff;padding:2rem;}
+    .scroll-indicator{position:absolute;left:50%;transform:translateX(-50%);bottom:20px;z-index:6}
+    .pulse{animation:pulse 1.6s infinite}
+    @keyframes pulse{0%{transform:translateY(0)}50%{transform:translateY(10px)}100%{transform:translateY(0)}}
+    main{max-width:1300px;margin:-60px auto 60px;background:#fff;border-radius:18px;padding:36px;box-shadow:0 20px 60px rgba(8,15,15,.08)}
+    .kpi-wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between}
+    .kpi{flex:1 1 260px;padding:16px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f7fffb);text-align:center;box-shadow:0 6px 18px rgba(6,95,70,.06)}
+    .num{font-size:1.6rem;font-weight:700;color:#065f46}
+    .label{margin-top:4px;font-size:.85rem;color:#374151}
+    .charts{margin-top:36px}
+    .chart-container{margin-bottom:30px;background:#fff;border-radius:12px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.05);height:280px}
+    .chart-container h3{text-align:center;margin-bottom:8px;color:#065f46;font-weight:600;font-size:1rem}
+    .chart-container canvas{height:220px !important}
+    .timeline{margin-top:20px;padding-left:0;list-style:none}
+    .timeline li{margin-bottom:16px;padding-left:20px;border-left:4px solid #0f766e;position:relative}
+    .timeline li::before{content:'';position:absolute;left:-10px;top:6px;width:12px;height:12px;background:#0f766e;border-radius:50%}
+    .timeline h4{margin:0;font-size:1rem;color:#065f46}
+    .timeline p{margin:4px 0 0;color:#374151;font-size:.85rem}
+    .footer-cta{text-align:center;margin-top:28px;padding:20px;border-radius:10px;background:linear-gradient(90deg,#f0fffa,#ffffff)}
+    @media (max-width:900px){.charts{grid-template-columns:1fr}.kpi-wrap{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <video autoplay loop muted playsinline preload="auto">
+      <source src="https://cdn.coverr.co/videos/coverr-green-hills-and-sky-8230/1080p.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <div class="content">
+      <h1 class="text-4xl md:text-5xl font-bold">从雾霾到蓝天</h1>
+      <p class="text-lg mt-2">十八大前后 · 中国生态治理的十年巨变</p>
+    </div>
+    <div class="scroll-indicator">
+      <img id="downArrow" src="/mnt/data/5c0f911a-d24f-4d2b-9629-6081a0ec1a87.png" alt="向下查看" width="60" class="pulse"/>
+    </div>
+  </section>
+
+  <main>
+    <section id="numbers">
+      <h2 class="text-xl font-semibold mb-4 text-green-900">关键数据（动态演示）</h2>
+      <div class="kpi-wrap">
+        <div class="kpi"><div class="num" data-from="72" data-to="33">72</div><div class="label">PM2.5 (2013→2023)</div></div>
+        <div class="kpi"><div class="num" data-from="20.8" data-to="25">20.8%</div><div class="label">森林覆盖率 (2010→2023)</div></div>
+        <div class="kpi"><div class="num" data-from="0" data-to="1">0</div><div class="label">生态环境督察常态化</div></div>
+      </div>
+    </section>
+
+    <section class="charts">
+      <div class="chart-container">
+        <h3>PM2.5 趋势变化</h3>
+        <canvas id="pm25Chart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>森林覆盖率变化</h3>
+        <canvas id="forestChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>城市 vs 农村空气质量改善</h3>
+        <canvas id="urbanRuralChart"></canvas>
+        <p class="text-center mt-2 text-sm text-gray-600">结论：城市空气质量改善幅度更显著，但农村提升同样可观，体现了治理的全面性。</p>
+      </div>
+    </section>
+
+    <section>
+      <h3 class="text-lg font-semibold text-green-900 mb-3">政策时间轴</h3>
+      <ul class="timeline">
+        <li><h4>2013 — 蓝天保卫战</h4><p>重点区域控煤、工业减排、机动车管理措施，推动 PM2.5 改善。</p></li>
+        <li><h4>2015 — 中央生态环境保护督察</h4><p>建立常态化督察机制，倒逼地方整改环境问题。</p></li>
+        <li><h4>2021 — 长江保护法</h4><p>确立流域生态保护与污染防治法律框架。</p></li>
+        <li><h4>持续 — 退耕还林 / 生态补偿</h4><p>财政与项目推动区域生态修复与绿色发展。</p></li>
+        <li><h4>2030/2060 — 双碳目标 🌏</h4><p>到2030年实现碳达峰，2060年实现碳中和，推动绿色转型和可持续发展。</p></li>
+      </ul>
+    </section>
+
+    <section class="footer-cta">
+      <h3 class="text-xl font-bold text-green-900">绿水青山就是金山银山</h3>
+     
+    </section>
+  </main>
+
+<script>
+function animateNumber(el,from,to,duration=1400){
+  const start=performance.now();from=Number(from);to=Number(to);
+  function step(ts){
+    const t=Math.min(1,(ts-start)/duration);
+    const eased=t<.5?2*t*t:-1+(4-2*t)*t;
+    const val=from+(to-from)*eased;
+    el.textContent=Number.isInteger(to)?Math.round(val):val.toFixed(1);
+    if(t<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.num').forEach(n=>{if(!n.dataset.animated){animateNumber(n,n.dataset.from,n.dataset.to);n.dataset.animated=1;}})}})
+},{threshold:.4});
+observer.observe(document.getElementById('numbers'));
+
+const pm25Years=[2013,2015,2018,2021,2023];
+const pm25Values=[72,58,40,30,33];
+const forestYears=[2010,2015,2018,2020,2022,2023];
+const forestValues=[20.8,21.7,22.3,23.8,23.8,25];
+new Chart(document.getElementById('pm25Chart'),{type:'line',data:{labels:pm25Years,datasets:[{label:'PM2.5',data:pm25Values,borderColor:'#0f766e',backgroundColor:'rgba(15,118,110,0.15)',fill:true,tension:.2}]},options:{responsive:true,maintainAspectRatio:false}});
+new Chart(document.getElementById('forestChart'),{type:'bar',data:{labels:forestYears,datasets:[{label:'森林覆盖率',data:forestValues,backgroundColor:'#34d399'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+
+const urbanRuralYears=[2013,2018,2023];
+const urbanPM25=[72,45,32];
+const ruralPM25=[60,42,35];
+new Chart(document.getElementById('urbanRuralChart'),{
+  type:'bar',
+  data:{
+    labels:urbanRuralYears,
+    datasets:[
+      {label:'城市 PM2.5',data:urbanPM25,backgroundColor:'#16a34a'},
+      {label:'农村 PM2.5',data:ruralPM25,backgroundColor:'#60a5fa'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}}}
+});
+
+document.getElementById('downArrow').addEventListener('click',()=>{document.getElementById('numbers').scrollIntoView({behavior:'smooth'})});
+</script>
+</body>
+</html>
